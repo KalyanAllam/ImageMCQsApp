@@ -298,7 +298,7 @@ namespace ImageMCQsApp.Pages
                 }
                 int count = (from e in Questions select e.SNo).Count();
 
-                if (count == Id)
+                if (count == 25)
                 { stopflag = "N"; }
             }
 
