@@ -1,0 +1,172 @@
+﻿@page "/quizcard/{Id:int}"
+@inherits QuizCardBase  
+@using ImageMCQsApp.Components
+
+<div class="container">
+    
+      <div class="quiz-header">
+           @if (Questions.Count>0)  
+{ 
+  
+          
+
+            @if (@_currentCount <= @totaltime)
+            {
+                <p>Total Time:</p>
+                  
+                @((60+@totaltime - @_currentCount)/(60)   )
+        }
+        else
+            {
+
+                <p>You execeeded the total time alloted for this quiz</p>
+            }
+           }
+            </div>
+   
+
+
+    <div class="quiz">
+       
+         
+        
+        @if (questionIndex < Questions.Count())
+        {
+            <div class="quiz-header">
+                @Questions[questionIndex].Topic
+            </div>
+
+
+
+            <div class="quiz-header">
+              <p>  @Questions[questionIndex].SNo</p>
+                 <p>Of</p>
+                <p>  @totalquestions</p>
+            </div>
+
+
+
+
+
+            
+            <div class="quiz-header">
+                @Questions[questionIndex].QuestionTitle 
+            </div>
+
+            
+                <div class="quiz-header">
+                <p>Choose correct answer and Submit the Question </p>
+                <button class="btn btn-primary" disabled=@(IsDisabled) @onclick="AnswerSubmit">Submit</button>
+                  
+            </div>
+           
+            <div class="quiz-body">
+                 @foreach (var option in Questions[questionIndex].Options)
+                {
+                    
+                    <OptionCard Option="@option" OnOptionSelected="OptionSelected" ></OptionCard>
+                }
+            </div>
+
+            <div class="quiz-header">
+                <p>  Time in Minutes</p>
+                @(@Questions[questionIndex].Time/60)
+            </div>
+
+
+            <div class="quiz-header">
+                <p>If answer not known Click Skip to Skip the question </p>
+                <button class="btn btn-primary" @onclick="AnswerSkip">Skip</button>
+            </div>
+        }
+        else
+        { 
+           
+            @if ((Questions.Count>0)&&(@_currentCount< @totaltime))
+            {
+                
+
+            <div class="app-title">
+                @if (score > (Questions.Count / 1.5))
+                {
+                    <img src="https://img.icons8.com/ios/100/000000/prize--v1.png" />
+                }
+                else
+                {
+                    <img src="https://img.icons8.com/color/96/000000/lose.png" />
+                }
+            </div>
+            <div class="app-title">
+                @(score > (Questions.Count() / 2) ? "Congratulations" : "Good Luck")
+            </div>
+           
+                <div class="quiz-header">
+                    <b>You scored @score points!</b>
+                </div>
+                <div class="quiz-header">
+                    <b>Out of @(Questions.Count()) Questions!</b>
+            </div>
+
+                @if (failedIndex > 0)
+                {
+                    @("Questions incorrectly answered  with answers:")
+
+                }
+              <div class="app-title">
+                
+           @for (int i = 0; i < failedIndex; i++)
+                    {
+                        <p>
+                            Question
+                        </p>
+                        
+                        
+                        <p>
+                        @(i+1)
+                        </p>
+                       
+                     <p>
+                    @failedQuestions[i]
+                    </p>
+                    <br />
+                        <p>
+                            Answer
+                        </p>
+                     <p>
+                        @failedAnswer[i]
+                        </p>
+                        
+                        <br />
+                        <p>
+                            Solution
+                        </p>
+                        <br />
+                        <p>
+                            @failedSolution[i]
+                        </p>
+                }
+                    </div>
+                
+
+             
+            }
+            else
+            { @if ((Questions.Count>0) && (@_currentCount>= @totaltime  ))
+                { 
+                @if (  (@score>0) || (@failedIndex > 0))
+                
+                {
+                    
+                    <p>Time Out!</p>
+                }
+                }
+                <div class="quiz-footer">
+                    <p>Loading..</p>
+
+                 
+                </div>
+            }
+
+        }
+    </div>
+</div>

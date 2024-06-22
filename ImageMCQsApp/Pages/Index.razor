@@ -1,0 +1,36 @@
+﻿@page "/"
+@inject ImageMCQsApp.Models.MyClass myClass
+@inject NavigationManager navigationManager
+ 
+<h1>  Quiz </h1>
+<h1>  Select Number of Questions and Click on Quiz </h1>
+ 
+<p>@Id</p>
+
+<div class="row">
+    <select @bind="@Id"
+     @bind:event="oninput">
+        <option value="5">5 Questions</option>
+        <option value="10">10 Questions</option>
+
+        <option value="15">15 Questions</option>
+        <option value="20">20 Questions</option>
+
+        <option value="25">25 Questions</option>
+    </select>
+</div>
+
+<button @onclick="PassId">
+ Quiz
+</button>
+
+
+@code {
+    public int Id=5 ;
+    public void PassId()
+    {
+
+   
+        navigationManager.NavigateTo($"/quizcard/{Id}", true);
+    }
+}
